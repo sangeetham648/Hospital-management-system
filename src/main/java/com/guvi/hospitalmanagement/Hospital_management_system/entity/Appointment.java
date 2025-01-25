@@ -7,6 +7,14 @@ import lombok.Data;
 @Data
 @Table (name = "appointment")
 public class Appointment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    private String age;
+    private String symptoms;
+    private String number;
+
     public long getId() {
         return id;
     }
@@ -46,12 +54,4 @@ public class Appointment {
     public void setNumber(String number) {
         this.number = number;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String age;
-    private String symptoms;
-    private String number;
 }
