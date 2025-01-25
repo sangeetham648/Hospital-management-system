@@ -1,6 +1,5 @@
 package com.guvi.hospitalmanagement.Hospital_management_system.controller;
 
-import com.guvi.hospitalmanagement.Hospital_management_system.entity.Appointment;
 import com.guvi.hospitalmanagement.Hospital_management_system.entity.Patient;
 import com.guvi.hospitalmanagement.Hospital_management_system.repository.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +35,29 @@ public class PatientController {
         Map<String, Boolean> response=new HashMap<String, Boolean>();
         response.put("Deleted",Boolean.TRUE);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/updatePatient/{id}")
+    public ResponseEntity<Patient> updatePatientById(@PathVariable long id,@RequestBody Patient patientDetails) throws AttributeNotFoundException {
+        Patient patient=patientRepo.findById(id).orElseThrow(()->new AttributeNotFoundException("Patient not found with id : "+id));
+
+        patient.setAge(patientDetails.getAge());
+        patient.setName(patientDetails.getName());
+        patient.setDose(patientDetails.getDose());
+        patient.setFees(patientDetails.getFees());
+        patient.setBloodGroup(patientDetails.getBloodGroup());
+        patient.setPrescription(patientDetails.getPrescription());
+        patient.setUrgency(patientDetails.getUrgency());
+//        patient.setId(patientDetails.getId());
+
+        Patient savedPatient=patientRepo.save(patient);
+
+        return ResponseEntity.ok(savedPatient);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Patient> getPatientById(@PathVariable long id)throws AttributeNotFoundException{
+        Patient patient = patientRepo.findById(id).orElseThrow(()->new AttributeNotFoundException("Patient not found with id : "+id));
+        return ResponseEntity.ok(patient);
     }
 }

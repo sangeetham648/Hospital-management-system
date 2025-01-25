@@ -36,4 +36,25 @@ public class AppointmentController {
         response.put("Deleted",Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/updateAppointment/{id}")
+    public ResponseEntity<Appointment> updateAppointmentById(@PathVariable long id, @RequestBody Appointment appointmentDetails) throws AttributeNotFoundException {
+        Appointment appointment=appointmentRepo.findById(id).orElseThrow(()->new AttributeNotFoundException("Appointment not found with id :"+id));
+
+        appointment.setAge(appointmentDetails.getAge());
+        appointment.setName(appointmentDetails.getName());
+        appointment.setSymptoms(appointmentDetails.getSymptoms());
+        appointment.setNumber(appointmentDetails.getNumber());
+//        appointment.setId(appointmentDetails.getId());
+
+        Appointment savedPatient=appointmentRepo.save(appointment);
+
+        return ResponseEntity.ok(savedPatient);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Appointment> getAppointmentById(@PathVariable long id)throws AttributeNotFoundException{
+        Appointment appointment = appointmentRepo.findById(id).orElseThrow(()->new AttributeNotFoundException("Appointment not found with id : "+id));
+        return ResponseEntity.ok(appointment);
+    }
 }
